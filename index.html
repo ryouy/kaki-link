@@ -990,13 +990,312 @@
       .chat-layout .chat-window { height: 520px; }
       .water-button { width: 190px; height: 190px; }
     }
+
+    /* Modern visual refresh */
+    :root {
+      --green: #22c55e;
+      --green2: #84cc16;
+      --dark: #0f172a;
+      --orange: #f97316;
+      --orange2: #fb923c;
+      --cream: #fff7ed;
+      --bg: #f8fafc;
+      --card: rgba(255,255,255,.78);
+      --line: rgba(15,23,42,.09);
+      --text: #111827;
+      --muted: #64748b;
+      --shadow: 0 24px 70px rgba(15, 23, 42, .10);
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 15% 8%, rgba(34,197,94,.16), transparent 30%),
+        radial-gradient(circle at 88% 9%, rgba(249,115,22,.16), transparent 28%),
+        radial-gradient(circle at 70% 90%, rgba(59,130,246,.10), transparent 34%),
+        linear-gradient(135deg, #f8fafc 0%, #eef7ee 52%, #fff7ed 100%);
+    }
+
+    .sidebar {
+      background: rgba(255,255,255,.70);
+      backdrop-filter: blur(24px);
+      border-right: 1px solid rgba(15,23,42,.08);
+      box-shadow: 12px 0 40px rgba(15,23,42,.04);
+    }
+
+    .brand-mark {
+      color: #fff;
+      background:
+        radial-gradient(circle at 32% 28%, #fb923c, transparent 34%),
+        linear-gradient(135deg, #16a34a, #22c55e 48%, #f97316);
+    }
+
+    .brand-mark svg {
+      width: 34px;
+      height: 34px;
+      filter: drop-shadow(0 5px 10px rgba(15,23,42,.14));
+    }
+
+    .brand strong {
+      letter-spacing: -.02em;
+    }
+
+    .user-card,
+    .topbar,
+    .card,
+    .metric,
+    .status,
+    .schedule,
+    .reward,
+    .chat-window {
+      background: rgba(255,255,255,.78);
+      border: 1px solid rgba(15,23,42,.08);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .user-card {
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.86), rgba(240,253,244,.74)),
+        radial-gradient(circle at 100% 0%, rgba(249,115,22,.18), transparent 36%);
+    }
+
+    .nav {
+      gap: 6px;
+    }
+
+    .nav button {
+      grid-template-columns: 42px 1fr auto;
+      padding: 10px 11px;
+      border-radius: 18px;
+      color: #475569;
+      letter-spacing: -.01em;
+    }
+
+    .nav button:hover {
+      background: rgba(34,197,94,.08);
+      color: #0f172a;
+    }
+
+    .nav button.active {
+      background:
+        radial-gradient(circle at 12% 20%, rgba(255,255,255,.28), transparent 30%),
+        linear-gradient(135deg, #16a34a, #22c55e 54%, #65a30d);
+      color: #fff;
+      box-shadow: 0 16px 34px rgba(22,163,74,.24);
+    }
+
+    .nav .nav-ico {
+      width: 38px;
+      height: 38px;
+      border-radius: 16px;
+      background: rgba(15,23,42,.045);
+      color: #16a34a;
+      font-size: inherit;
+    }
+
+    .nav button.active .nav-ico {
+      color: #fff;
+      background: rgba(255,255,255,.18);
+    }
+
+    .nav-ico svg,
+    .action-card svg,
+    .btn-ico {
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
+
+    .topbar {
+      border-radius: 28px;
+      background: rgba(255,255,255,.72);
+    }
+
+    .topbar h1 {
+      letter-spacing: -.04em;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 16px;
+      box-shadow: 0 12px 26px rgba(15,23,42,.10);
+      letter-spacing: -.01em;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #16a34a, #15803d);
+    }
+
+    .btn-orange {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+    }
+
+    .btn-light {
+      color: #0f172a;
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(15,23,42,.09);
+    }
+
+    .btn-info {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    }
+
+    .card {
+      border-radius: 30px;
+    }
+
+    .card-head {
+      background: rgba(248,250,252,.64);
+      border-bottom: 1px solid rgba(15,23,42,.08);
+    }
+
+    .card-head h2,
+    .card-head h3 {
+      color: #0f172a;
+      letter-spacing: -.03em;
+    }
+
+    .metric {
+      border-radius: 26px;
+      box-shadow: 0 18px 42px rgba(15,23,42,.07);
+    }
+
+    .metric strong {
+      letter-spacing: -.05em;
+    }
+
+    .bar {
+      height: 8px;
+      background: rgba(15,23,42,.07);
+    }
+
+    .bar i {
+      background: linear-gradient(90deg, #22c55e, #84cc16);
+    }
+
+    .badge {
+      background: linear-gradient(135deg, #f97316, #fb923c);
+      box-shadow: 0 8px 18px rgba(249,115,22,.22);
+    }
+
+    .orchard-stage,
+    .water-control,
+    .live-video {
+      border-radius: 30px;
+      border: 1px solid rgba(15,23,42,.08);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.65);
+    }
+
+    .action-card {
+      border: 1px solid rgba(15,23,42,.08);
+      border-radius: 22px;
+      background: rgba(255,255,255,.82);
+      box-shadow: 0 14px 30px rgba(15,23,42,.08);
+      transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+    }
+
+    .action-card:hover {
+      transform: translateY(-3px);
+      background: #fff;
+      box-shadow: 0 18px 38px rgba(15,23,42,.12);
+    }
+
+    .action-card span {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      color: #16a34a;
+      background: rgba(34,197,94,.10);
+      font-size: inherit;
+    }
+
+    .speech-bubble,
+    .camera-stat,
+    .rec {
+      backdrop-filter: blur(16px);
+    }
+
+    .chat-head {
+      background: rgba(248,250,252,.76);
+    }
+
+    .messages {
+      background:
+        radial-gradient(circle at 10% 8%, rgba(34,197,94,.10), transparent 30%),
+        radial-gradient(circle at 92% 20%, rgba(249,115,22,.08), transparent 30%),
+        #f8fafc;
+    }
+
+    .msg.bot,
+    .msg.other {
+      border: 1px solid rgba(15,23,42,.08);
+      box-shadow: 0 8px 20px rgba(15,23,42,.05);
+    }
+
+    .msg.me {
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      box-shadow: 0 10px 24px rgba(22,163,74,.20);
+    }
+
+    .chat-form input,
+    .chat-form textarea,
+    .form-grid input,
+    .form-grid select,
+    .form-grid textarea {
+      border: 1px solid rgba(15,23,42,.10);
+      background: rgba(255,255,255,.86);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.72);
+    }
+
+    .water-button {
+      background: radial-gradient(circle at 35% 25%, #93c5fd, #2563eb 62%, #1e3a8a);
+      box-shadow: 0 26px 56px rgba(37,99,235,.28), inset 0 -12px 0 rgba(0,0,0,.13);
+    }
+
+    .reward-img {
+      background:
+        radial-gradient(circle at 35% 20%, rgba(249,115,22,.16), transparent 34%),
+        linear-gradient(135deg, #fff, #f0fdf4);
+    }
+
+    .mobile-nav-toggle {
+      border-radius: 16px;
+      background: linear-gradient(135deg, #16a34a, #15803d);
+    }
+
   </style>
 </head>
 <body>
+
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 10.8 12 4l8.5 6.8v8.7a1 1 0 0 1-1 1H15v-6h-6v6H4.5a1 1 0 0 1-1-1v-8.7Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-tree" viewBox="0 0 24 24"><path d="M12 21v-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M7.2 15.2h9.6a3.7 3.7 0 0 0 1.1-7.2 4.9 4.9 0 0 0-9.8 0 3.7 3.7 0 0 0-.9 7.2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-droplet" viewBox="0 0 24 24"><path d="M12 3.5s6 6.3 6 11a6 6 0 0 1-12 0c0-4.7 6-11 6-11Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9.2 15.1a2.9 2.9 0 0 0 3.7 2.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4.5 7.5h3l1.3-2h6.4l1.3 2h3a1.5 1.5 0 0 1 1.5 1.5v9A1.5 1.5 0 0 1 19.5 19h-15A1.5 1.5 0 0 1 3 17.5v-9A1.5 1.5 0 0 1 4.5 7.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.4" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M5.2 18.4 4 21l3.2-1.1a8.6 8.6 0 1 0-2-1.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 11.5h8M8 14.5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M9.5 11.5a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4ZM3.8 19.3a5.8 5.8 0 0 1 11.4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M16.4 10.9a2.7 2.7 0 1 0-.7-5.3M16.7 14.2a4.6 4.6 0 0 1 3.5 4.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M6.5 4.5v3M17.5 4.5v3M4 9h16M5.5 6.2h13A1.5 1.5 0 0 1 20 7.7v10.8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5V7.7a1.5 1.5 0 0 1 1.5-1.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><path d="M4 13h4l2-6 4 11 2-5h4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><path d="M4.5 10h15v10h-15V10ZM3.8 7h16.4v3H3.8V7ZM12 7v13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 7s-4.5.2-4.5-2.2C7.5 3.7 8.4 3 9.4 3 11.2 3 12 7 12 7Zm0 0s4.5.2 4.5-2.2c0-1.1-.9-1.8-1.9-1.8C12.8 3 12 7 12 7Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 9.8a6 6 0 1 0-12 0c0 7-2 7.2-2 8.2h16c0-1-2-.9-2-8.2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 20a2.2 2.2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M7 3.8h7l4 4V20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4.8a1 1 0 0 1 1-1Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3.8V8h4M9 12h6M9 15h6M9 18h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  </svg>
   <div class="app">
     <aside class="sidebar" id="sidebar">
       <div class="brand">
-        <div class="brand-mark">柿</div>
+        <div class="brand-mark" aria-label="KAKI LINK">
+          <svg viewBox="0 0 48 48" aria-hidden="true">
+            <circle cx="24" cy="26" r="13" fill="currentColor" opacity=".95"/>
+            <path d="M24 14c4-8 12-8 16-3-4 1-9 4-12 9" fill="currentColor" opacity=".55"/>
+            <path d="M24 14c-4-8-12-8-16-3 4 1 9 4 12 9" fill="currentColor" opacity=".4"/>
+          </svg>
+        </div>
         <div>
           <strong>KAKI LINK</strong>
           <span>スマート柿園アプリ</span>
@@ -1018,15 +1317,15 @@
       </div>
 
       <nav class="nav" aria-label="アプリ内ページ">
-        <button class="active" data-page="home"><span class="nav-ico">家</span>ホーム<span class="badge">3</span></button>
-        <button data-page="tree"><span class="nav-ico">木</span>マイ柿の樹<span></span></button>
-        <button data-page="watering"><span class="nav-ico">水</span>水やり操作<span></span></button>
-        <button data-page="camera"><span class="nav-ico">映</span>ライブカメラ<span></span></button>
-        <button data-page="kakiChat"><span class="nav-ico">話</span>柿とチャット<span></span></button>
-        <button data-page="teamChat"><span class="nav-ico">共</span>共同管理チャット<span class="badge">2</span></button>
-        <button data-page="tasks"><span class="nav-ico">予</span>作業予約<span></span></button>
-        <button data-page="records"><span class="nav-ico">記</span>成長記録<span></span></button>
-        <button data-page="rewards"><span class="nav-ico">得</span>特典交換<span></span></button>
+        <button class="active" data-page="home"><span class="nav-ico"><svg><use href="#i-home"></use></svg></span>ホーム<span class="badge">3</span></button>
+        <button data-page="tree"><span class="nav-ico"><svg><use href="#i-tree"></use></svg></span>マイ柿の樹<span></span></button>
+        <button data-page="watering"><span class="nav-ico"><svg><use href="#i-droplet"></use></svg></span>水やり操作<span></span></button>
+        <button data-page="camera"><span class="nav-ico"><svg><use href="#i-camera"></use></svg></span>ライブカメラ<span></span></button>
+        <button data-page="kakiChat"><span class="nav-ico"><svg><use href="#i-chat"></use></svg></span>柿とチャット<span></span></button>
+        <button data-page="teamChat"><span class="nav-ico"><svg><use href="#i-users"></use></svg></span>共同管理チャット<span class="badge">2</span></button>
+        <button data-page="tasks"><span class="nav-ico"><svg><use href="#i-calendar"></use></svg></span>作業予約<span></span></button>
+        <button data-page="records"><span class="nav-ico"><svg><use href="#i-activity"></use></svg></span>成長記録<span></span></button>
+        <button data-page="rewards"><span class="nav-ico"><svg><use href="#i-gift"></use></svg></span>特典交換<span></span></button>
       </nav>
     </aside>
 
@@ -1038,9 +1337,9 @@
           <p id="pageDesc">今日の柿園の状態と、やるべき作業を確認できます。</p>
         </div>
         <div class="top-actions">
-          <a class="btn btn-light" href="https://docs.google.com/document/d/10D8Qo2LepE-rljoa-gQeZ6fdqvN2UnLrI5z-N2ffLec/edit?usp=sharing" target="_blank" rel="noopener noreferrer">企画書を見る</a>
-          <button class="btn btn-light" id="notifyBtn">通知確認</button>
-          <button class="btn btn-orange" data-open-page="tasks">作業予約</button>
+          <a class="btn btn-light" href="https://docs.google.com/document/d/10D8Qo2LepE-rljoa-gQeZ6fdqvN2UnLrI5z-N2ffLec/edit?usp=sharing" target="_blank" rel="noopener noreferrer"><svg class="btn-ico"><use href="#i-doc"></use></svg>企画書を見る</a>
+          <button class="btn btn-light" id="notifyBtn"><svg class="btn-ico"><use href="#i-bell"></use></svg>通知確認</button>
+          <button class="btn btn-orange" data-open-page="tasks"><svg class="btn-ico"><use href="#i-plus"></use></svg>作業予約</button>
         </div>
       </header>
 
@@ -1099,10 +1398,10 @@
                   <div class="kaki-face"><div class="eye left"></div><div class="eye right"></div><div class="mouth"></div></div>
                 </div>
                 <div class="quick-actions">
-                  <button class="action-card" id="quickWater"><span>水</span>水やり</button>
-                  <button class="action-card" data-open-page="camera"><span>映</span>カメラ</button>
-                  <button class="action-card" data-open-page="kakiChat"><span>話</span>柿と会話</button>
-                  <button class="action-card" data-open-page="teamChat"><span>共</span>共同管理</button>
+                  <button class="action-card" id="quickWater"><span><svg><use href="#i-droplet"></use></svg></span>水やり</button>
+                  <button class="action-card" data-open-page="camera"><span><svg><use href="#i-camera"></use></svg></span>カメラ</button>
+                  <button class="action-card" data-open-page="kakiChat"><span><svg><use href="#i-chat"></use></svg></span>柿と会話</button>
+                  <button class="action-card" data-open-page="teamChat"><span><svg><use href="#i-users"></use></svg></span>共同管理</button>
                 </div>
               </div>
             </div>
