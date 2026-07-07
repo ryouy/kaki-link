@@ -1,0 +1,1716 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KAKI LINK | 完全アプリデモ</title>
+  <style>
+    :root {
+      --green: #3f7d25;
+      --green2: #69a83a;
+      --dark: #173012;
+      --orange: #f28a16;
+      --orange2: #ffb95d;
+      --cream: #fff9ec;
+      --bg: #f5f8ee;
+      --card: rgba(255,255,255,.9);
+      --line: #e1d8c8;
+      --text: #24301f;
+      --muted: #6a7664;
+      --danger: #d9534f;
+      --info: #2f80ed;
+      --shadow: 0 18px 48px rgba(34, 70, 22, .14);
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 6%, rgba(242,138,22,.14), transparent 28%),
+        radial-gradient(circle at 94% 14%, rgba(63,125,37,.16), transparent 30%),
+        linear-gradient(180deg, #fffdf7 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }
+
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 22px;
+      background: rgba(255,255,255,.82);
+      border-right: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .brand-mark {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 17px;
+      color: #fff;
+      font-weight: 950;
+      background: linear-gradient(135deg, var(--orange), var(--green));
+      box-shadow: 0 12px 24px rgba(63,125,37,.18);
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 20px;
+      letter-spacing: .04em;
+    }
+
+    .brand span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .user-card {
+      padding: 14px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #fff, #edf7df);
+      border: 1px solid var(--line);
+      margin-bottom: 18px;
+    }
+
+    .user-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffe0b4, #f28a16);
+      color: #fff;
+      font-weight: 950;
+    }
+
+    .user-row strong { display: block; }
+    .user-row span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .points {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed #c9d6bd;
+      font-weight: 900;
+    }
+
+    .points b { color: var(--orange); }
+
+    .nav {
+      display: grid;
+      gap: 8px;
+    }
+
+    .nav button {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      display: grid;
+      grid-template-columns: 34px 1fr auto;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 16px;
+      color: #465440;
+      text-align: left;
+      font-weight: 900;
+      transition: .15s ease;
+    }
+
+    .nav button:hover { background: #eef7e6; color: var(--dark); }
+    .nav button.active {
+      background: linear-gradient(135deg, var(--green), var(--green2));
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(63,125,37,.2);
+    }
+
+    .nav .nav-ico {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(63,125,37,.1);
+      font-size: 18px;
+    }
+
+    .nav button.active .nav-ico { background: rgba(255,255,255,.22); }
+
+    .badge {
+      min-width: 24px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: var(--orange);
+      color: #fff;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 950;
+    }
+
+    .main {
+      min-width: 0;
+      padding: 24px;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 18px;
+      margin-bottom: 22px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255,255,255,.78);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 28px rgba(34,70,22,.08);
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: clamp(20px, 2.6vw, 32px);
+    }
+
+    .topbar p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 11px 16px;
+      font-weight: 950;
+      box-shadow: 0 10px 22px rgba(34,70,22,.12);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 28px rgba(34,70,22,.16);
+    }
+
+    .btn-primary { color: #fff; background: linear-gradient(135deg, var(--green), var(--dark)); }
+    .btn-orange { color: #fff; background: linear-gradient(135deg, var(--orange), #db6e05); }
+    .btn-light { color: var(--dark); background: #fff; border: 1px solid var(--line); box-shadow: none; }
+    .btn-danger { color: #fff; background: linear-gradient(135deg, #e26055, #b82d29); }
+    .btn-info { color: #fff; background: linear-gradient(135deg, #3d92ff, #2367bd); }
+
+    .page { display: none; animation: fade .18s ease; }
+    .page.active { display: block; }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid.two { grid-template-columns: 1.25fr .75fr; }
+    .grid.three { grid-template-columns: repeat(3, 1fr); }
+    .grid.four { grid-template-columns: repeat(4, 1fr); }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      box-shadow: 0 12px 34px rgba(34,70,22,.08);
+      overflow: hidden;
+    }
+
+    .card-head {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(90deg, rgba(234,245,223,.75), rgba(255,255,255,.5));
+    }
+
+    .card-head h2, .card-head h3 {
+      margin: 0;
+      color: var(--dark);
+      font-size: 18px;
+    }
+
+    .card-body { padding: 20px; }
+
+    .metric {
+      min-height: 132px;
+      padding: 18px;
+      border-radius: 22px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .metric label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 950;
+      margin-bottom: 8px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 32px;
+      line-height: 1.1;
+    }
+
+    .metric small {
+      display: block;
+      color: var(--muted);
+      margin-top: 8px;
+      font-weight: 800;
+    }
+
+    .bar {
+      height: 9px;
+      margin-top: 14px;
+      background: #eef2e7;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar i {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--green), #91c85d);
+    }
+
+    .orchard-stage {
+      position: relative;
+      min-height: 450px;
+      border-radius: 26px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, #dff3ff 0%, #eef9ff 36%, #d8edac 37%, #b9da74 100%);
+      border: 1px solid var(--line);
+    }
+
+    .cloud {
+      position: absolute;
+      width: 130px;
+      height: 40px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.86);
+      box-shadow: 35px 5px 0 rgba(255,255,255,.82), 70px -6px 0 rgba(255,255,255,.76);
+      opacity: .8;
+    }
+    .cloud.c1 { left: 8%; top: 48px; }
+    .cloud.c2 { right: 18%; top: 84px; transform: scale(.75); }
+
+    .field-row {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 170px;
+      background:
+        repeating-linear-gradient(160deg, rgba(65,110,38,.18) 0 18px, rgba(255,255,255,.05) 18px 33px),
+        linear-gradient(180deg, transparent, rgba(70,109,35,.18));
+    }
+
+    .tree-big {
+      position: absolute;
+      left: 50%;
+      top: 92px;
+      transform: translateX(-50%);
+      width: 300px;
+      height: 290px;
+    }
+
+    .trunk {
+      position: absolute;
+      left: 134px;
+      top: 120px;
+      width: 34px;
+      height: 150px;
+      border-radius: 16px 16px 8px 8px;
+      background: linear-gradient(90deg, #71411f, #b66e36, #7b4623);
+      z-index: 2;
+    }
+
+    .branch {
+      position: absolute;
+      height: 13px;
+      width: 100px;
+      border-radius: 999px;
+      background: #80502b;
+      z-index: 2;
+    }
+    .branch.b1 { left: 142px; top: 145px; transform: rotate(-26deg); transform-origin: left center; }
+    .branch.b2 { left: 63px; top: 150px; transform: rotate(204deg); transform-origin: right center; }
+    .branch.b3 { left: 140px; top: 194px; transform: rotate(22deg); transform-origin: left center; }
+
+    .leaf {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 24%, #9bd464, #4c912e 62%, #2d681d);
+      box-shadow: inset -14px -18px 0 rgba(18, 75, 20, .13);
+      z-index: 3;
+    }
+    .l1 { left: 46px; top: 36px; width: 132px; height: 122px; }
+    .l2 { left: 128px; top: 28px; width: 134px; height: 132px; }
+    .l3 { left: 22px; top: 114px; width: 138px; height: 118px; }
+    .l4 { left: 116px; top: 116px; width: 160px; height: 126px; }
+    .l5 { left: 76px; top: 72px; width: 140px; height: 140px; }
+
+    .fruit {
+      position: absolute;
+      z-index: 4;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 25%, #ffc66b, var(--orange) 62%, #cf6104);
+      transition: transform .2s ease;
+      box-shadow: inset -5px -6px 0 rgba(120,50,0,.12);
+    }
+    .fruit::before {
+      content: "";
+      position: absolute;
+      top: -5px;
+      left: 10px;
+      width: 11px;
+      height: 8px;
+      border-radius: 50% 0;
+      background: #4e912e;
+      transform: rotate(-20deg);
+    }
+    .f1 { left: 82px; top: 86px; }
+    .f2 { left: 166px; top: 82px; }
+    .f3 { left: 54px; top: 152px; }
+    .f4 { left: 122px; top: 150px; }
+    .f5 { left: 210px; top: 154px; }
+    .f6 { left: 92px; top: 204px; }
+    .f7 { left: 176px; top: 202px; }
+
+    .kaki-face {
+      position: absolute;
+      left: 50%;
+      top: 260px;
+      transform: translateX(-50%);
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 32% 24%, #ffc46a, #f28a16 62%, #d26405);
+      z-index: 6;
+      box-shadow: 0 14px 24px rgba(110,70,20,.2);
+    }
+    .kaki-face::before {
+      content: "";
+      position: absolute;
+      width: 42px;
+      height: 20px;
+      left: 25px;
+      top: -7px;
+      border-radius: 80% 12%;
+      background: #4f9730;
+      box-shadow: 18px 3px 0 #67ad39, -12px 5px 0 #75b842;
+    }
+    .kaki-face .eye {
+      position: absolute;
+      top: 39px;
+      width: 10px;
+      height: 14px;
+      border-radius: 50%;
+      background: #263027;
+    }
+    .kaki-face .eye.left { left: 29px; }
+    .kaki-face .eye.right { right: 29px; }
+    .kaki-face .mouth {
+      position: absolute;
+      left: 36px;
+      top: 59px;
+      width: 22px;
+      height: 12px;
+      border-radius: 0 0 16px 16px;
+      background: #5b251b;
+    }
+
+    .speech-bubble {
+      position: absolute;
+      left: 22px;
+      top: 24px;
+      max-width: 310px;
+      padding: 16px 18px;
+      border-radius: 22px;
+      background: rgba(255,255,255,.94);
+      border: 1px solid rgba(255,255,255,.8);
+      box-shadow: 0 12px 26px rgba(34,70,22,.12);
+      font-weight: 900;
+      line-height: 1.6;
+      z-index: 8;
+    }
+
+    .quick-actions {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 22px;
+      z-index: 8;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .action-card {
+      display: grid;
+      gap: 5px;
+      place-items: center;
+      min-height: 84px;
+      border: 1px solid rgba(255,255,255,.8);
+      border-radius: 18px;
+      background: rgba(255,255,255,.9);
+      font-weight: 950;
+      color: var(--dark);
+      box-shadow: 0 10px 22px rgba(34,70,22,.08);
+    }
+
+    .action-card span { font-size: 26px; }
+
+    .status-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .status {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      font-weight: 900;
+    }
+
+    .status span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .live-video {
+      position: relative;
+      min-height: 540px;
+      border-radius: 26px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, #bfe9ff 0%, #eaf9ff 42%, #bdda82 43%, #7eab48 100%);
+      border: 1px solid var(--line);
+      box-shadow: inset 0 0 80px rgba(255,255,255,.25);
+    }
+
+    .scanline {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(0deg, rgba(255,255,255,.08) 0 2px, transparent 2px 5px);
+      mix-blend-mode: soft-light;
+    }
+
+    .video-tree {
+      transform: scale(1.2);
+      transform-origin: center center;
+      top: 130px;
+    }
+
+    .camera-ui {
+      position: absolute;
+      inset: 18px;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .rec {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.58);
+      color: #fff;
+      font-weight: 950;
+      font-size: 13px;
+    }
+
+    .rec i {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ff342d;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink { 50% { opacity: .25; } }
+
+    .camera-stats {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      display: grid;
+      gap: 8px;
+      width: 220px;
+    }
+
+    .camera-stat {
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(0,0,0,.58);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+
+    .youtube-demo {
+      background: #101610;
+      min-height: 560px;
+    }
+
+    .youtube-frame {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      z-index: 1;
+    }
+
+    .youtube-demo .camera-ui {
+      z-index: 3;
+    }
+
+    .youtube-demo .camera-stats,
+    .youtube-demo .rec {
+      pointer-events: auto;
+    }
+
+    .chat-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .chat-window {
+      height: 560px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      overflow: hidden;
+    }
+
+    .chat-head {
+      padding: 15px 17px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fbfff6;
+    }
+
+    .chat-head .avatar { width: 38px; height: 38px; }
+    .chat-head strong { display: block; }
+    .chat-head span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .messages {
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(242,138,22,.08), transparent 30%),
+        #fcfdf9;
+    }
+
+    .msg {
+      max-width: 82%;
+      padding: 11px 13px;
+      border-radius: 18px;
+      line-height: 1.55;
+      font-size: 14px;
+      font-weight: 700;
+      white-space: pre-wrap;
+    }
+
+    .msg.bot, .msg.other {
+      align-self: flex-start;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-bottom-left-radius: 5px;
+    }
+
+    .msg.me {
+      align-self: flex-end;
+      color: #fff;
+      background: var(--green);
+      border-bottom-right-radius: 5px;
+    }
+
+    .msg small {
+      display: block;
+      opacity: .7;
+      font-size: 11px;
+      margin-bottom: 3px;
+      font-weight: 900;
+    }
+
+    .chat-form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      padding: 12px;
+      border-top: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .chat-form input, .chat-form textarea {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 12px 14px;
+      outline: none;
+      min-width: 0;
+    }
+
+    .chat-form button {
+      border: 0;
+      border-radius: 999px;
+      padding: 0 17px;
+      color: #fff;
+      background: var(--green);
+      font-weight: 950;
+    }
+
+    .watering-hero {
+      display: grid;
+      grid-template-columns: 1fr .9fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .water-control {
+      display: grid;
+      place-items: center;
+      min-height: 420px;
+      border-radius: 28px;
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 50% 40%, rgba(47,128,237,.16), transparent 34%),
+        linear-gradient(180deg, #fff, #eff8ff);
+    }
+
+    .water-button {
+      position: relative;
+      width: 230px;
+      height: 230px;
+      border: 0;
+      border-radius: 50%;
+      color: #fff;
+      background: radial-gradient(circle at 35% 25%, #75c7ff, #2f80ed 62%, #1857a8);
+      box-shadow: 0 24px 48px rgba(47,128,237,.26), inset 0 -12px 0 rgba(0,0,0,.12);
+      font-size: 25px;
+      font-weight: 950;
+      letter-spacing: .04em;
+      transition: .2s ease;
+    }
+
+    .water-button:hover { transform: scale(1.03); }
+    .water-button:active { transform: scale(.98); }
+
+    .water-button::before,
+    .water-button::after {
+      content: "";
+      position: absolute;
+      inset: -18px;
+      border: 2px solid rgba(47,128,237,.2);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    .water-button::after { animation-delay: .6s; }
+
+    @keyframes pulse {
+      from { transform: scale(.9); opacity: .8; }
+      to { transform: scale(1.24); opacity: 0; }
+    }
+
+    .schedule-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .schedule {
+      display: grid;
+      grid-template-columns: 78px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .schedule time {
+      color: var(--orange);
+      font-weight: 950;
+    }
+
+    .schedule strong { display: block; }
+    .schedule span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .form-grid label {
+      display: grid;
+      gap: 6px;
+      color: var(--dark);
+      font-size: 13px;
+      font-weight: 950;
+    }
+
+    .form-grid input, .form-grid select, .form-grid textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 13px;
+      background: #fff;
+      outline: none;
+    }
+
+    .form-grid textarea { min-height: 94px; resize: vertical; }
+
+    .market-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .reward {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .reward-img {
+      display: grid;
+      place-items: center;
+      min-height: 150px;
+      background: linear-gradient(135deg, #fff4df, #eef8df);
+      font-size: 64px;
+    }
+
+    .reward-body { padding: 16px; }
+    .reward-body h3 { margin: 0 0 8px; }
+    .reward-body p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .price {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 950;
+    }
+
+    .price b { color: var(--orange); }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      place-items: center;
+      padding: 20px;
+      background: rgba(21, 35, 16, .48);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-backdrop.show { display: grid; }
+
+    .modal {
+      width: min(640px, 100%);
+      border-radius: 28px;
+      background: #fff;
+      border: 1px solid var(--line);
+      box-shadow: 0 30px 80px rgba(0,0,0,.24);
+      overflow: hidden;
+    }
+
+    .modal-head {
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      background: #fbfff6;
+    }
+
+    .modal-head h3 { margin: 0; }
+    .modal-head button {
+      border: 0;
+      background: #eef3e9;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-weight: 950;
+    }
+
+    .modal-body { padding: 20px; }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      z-index: 80;
+      transform: translateX(-50%) translateY(18px);
+      opacity: 0;
+      pointer-events: none;
+      padding: 13px 18px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--dark);
+      box-shadow: 0 15px 32px rgba(0,0,0,.2);
+      font-weight: 950;
+      transition: .22s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .mobile-nav-toggle {
+      display: none;
+      border: 0;
+      border-radius: 14px;
+      padding: 10px 12px;
+      color: #fff;
+      background: var(--green);
+      font-weight: 950;
+    }
+
+    @media (max-width: 1080px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar {
+        position: fixed;
+        z-index: 40;
+        left: 0;
+        top: 0;
+        width: 300px;
+        transform: translateX(-105%);
+        transition: .22s ease;
+        box-shadow: 0 30px 70px rgba(0,0,0,.2);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .mobile-nav-toggle { display: inline-block; }
+      .grid.two, .chat-layout, .watering-hero { grid-template-columns: 1fr; }
+      .topbar { top: 12px; }
+    }
+
+    @media (max-width: 760px) {
+      .main { padding: 14px; }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .grid.three, .grid.four, .market-grid { grid-template-columns: 1fr; }
+      .quick-actions { grid-template-columns: repeat(2, 1fr); }
+      .orchard-stage { min-height: 560px; }
+      .tree-big { transform: translateX(-50%) scale(.88); top: 118px; }
+      .schedule { grid-template-columns: 1fr; }
+      .chat-layout .chat-window { height: 520px; }
+      .water-button { width: 190px; height: 190px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">柿</div>
+        <div>
+          <strong>KAKI LINK</strong>
+          <span>スマート柿園アプリ</span>
+        </div>
+      </div>
+
+      <div class="user-card">
+        <div class="user-row">
+          <div class="avatar">R</div>
+          <div>
+            <strong>Ryoさん</strong>
+            <span>共同オーナー・A-07</span>
+          </div>
+        </div>
+        <div class="points">
+          <span>保有ポイント</span>
+          <b id="pointDisplay">1,240 pt</b>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="アプリ内ページ">
+        <button class="active" data-page="home"><span class="nav-ico">家</span>ホーム<span class="badge">3</span></button>
+        <button data-page="tree"><span class="nav-ico">木</span>マイ柿の樹<span></span></button>
+        <button data-page="watering"><span class="nav-ico">水</span>水やり操作<span></span></button>
+        <button data-page="camera"><span class="nav-ico">映</span>ライブカメラ<span></span></button>
+        <button data-page="kakiChat"><span class="nav-ico">話</span>柿とチャット<span></span></button>
+        <button data-page="teamChat"><span class="nav-ico">共</span>共同管理チャット<span class="badge">2</span></button>
+        <button data-page="tasks"><span class="nav-ico">予</span>作業予約<span></span></button>
+        <button data-page="records"><span class="nav-ico">記</span>成長記録<span></span></button>
+        <button data-page="rewards"><span class="nav-ico">得</span>特典交換<span></span></button>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="mobile-nav-toggle" id="menuBtn">メニュー</button>
+        <div>
+          <h1 id="pageTitle">ホーム</h1>
+          <p id="pageDesc">今日の柿園の状態と、やるべき作業を確認できます。</p>
+        </div>
+        <div class="top-actions">
+          <button class="btn btn-light" id="notifyBtn">通知確認</button>
+          <button class="btn btn-orange" data-open-page="tasks">作業予約</button>
+        </div>
+      </header>
+
+      <section class="page active" id="home">
+        <div class="grid four">
+          <div class="metric">
+            <label>土壌湿度</label>
+            <strong id="mMoisture">40%</strong>
+            <small>やや乾燥。水やり推奨</small>
+            <div class="bar"><i id="barMoisture" style="width:40%"></i></div>
+          </div>
+          <div class="metric">
+            <label>気温</label>
+            <strong id="mTemp">24.8℃</strong>
+            <small>作業しやすい気温</small>
+            <div class="bar"><i id="barTemp" style="width:62%"></i></div>
+          </div>
+          <div class="metric">
+            <label>実の数</label>
+            <strong id="mFruit">32個</strong>
+            <small>前週比 +3個</small>
+            <div class="bar"><i style="width:72%"></i></div>
+          </div>
+          <div class="metric">
+            <label>健康スコア</label>
+            <strong id="mHealth">88</strong>
+            <small>良好</small>
+            <div class="bar"><i id="barHealth" style="width:88%"></i></div>
+          </div>
+        </div>
+
+        <div class="grid two" style="margin-top:18px;">
+          <div class="card">
+            <div class="card-head">
+              <h2>マイ柿の樹 A-07</h2>
+              <button class="btn btn-light" data-open-page="tree">詳細を見る</button>
+            </div>
+            <div class="card-body">
+              <div class="orchard-stage">
+                <div class="cloud c1"></div>
+                <div class="cloud c2"></div>
+                <div class="field-row"></div>
+                <div class="speech-bubble" id="mainSpeech">のどが渇いてきたよ。水やりしてくれるとうれしいな。</div>
+                <div class="tree-big">
+                  <div class="trunk"></div>
+                  <div class="branch b1"></div>
+                  <div class="branch b2"></div>
+                  <div class="branch b3"></div>
+                  <div class="leaf l1"></div>
+                  <div class="leaf l2"></div>
+                  <div class="leaf l3"></div>
+                  <div class="leaf l4"></div>
+                  <div class="leaf l5"></div>
+                  <div class="fruit f1"></div><div class="fruit f2"></div><div class="fruit f3"></div>
+                  <div class="fruit f4"></div><div class="fruit f5"></div><div class="fruit f6"></div><div class="fruit f7"></div>
+                  <div class="kaki-face"><div class="eye left"></div><div class="eye right"></div><div class="mouth"></div></div>
+                </div>
+                <div class="quick-actions">
+                  <button class="action-card" id="quickWater"><span>水</span>水やり</button>
+                  <button class="action-card" data-open-page="camera"><span>映</span>カメラ</button>
+                  <button class="action-card" data-open-page="kakiChat"><span>話</span>柿と会話</button>
+                  <button class="action-card" data-open-page="teamChat"><span>共</span>共同管理</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="card">
+              <div class="card-head"><h2>今日のおすすめ作業</h2></div>
+              <div class="card-body">
+                <div class="status-list">
+                  <div class="status"><div><strong>水やり</strong><span>土壌湿度40%。午前中推奨</span></div><button class="btn btn-info" data-open-page="watering">実行</button></div>
+                  <div class="status"><div><strong>ライブ確認</strong><span>葉の色と実の状態を確認</span></div><button class="btn btn-light" data-open-page="camera">見る</button></div>
+                  <div class="status"><div><strong>共同作業相談</strong><span>週末の草刈り担当を調整</span></div><button class="btn btn-light" data-open-page="teamChat">開く</button></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-head"><h2>未読通知</h2><span class="badge">3</span></div>
+              <div class="card-body">
+                <div class="status-list">
+                  <div class="status"><div><strong>AIアラート</strong><span>明日午後は乾燥傾向です</span></div></div>
+                  <div class="status"><div><strong>共同管理者</strong><span>田中さんが日曜午前に参加可能</span></div></div>
+                  <div class="status"><div><strong>ポイント</strong><span>前回作業で80pt獲得</span></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="tree">
+        <div class="grid two">
+          <div class="card">
+            <div class="card-head">
+              <h2>マイ柿の樹 A-07</h2>
+              <button class="btn btn-orange" id="harvestBtn">収穫チェック</button>
+            </div>
+            <div class="card-body">
+              <div class="orchard-stage">
+                <div class="cloud c1"></div><div class="cloud c2"></div><div class="field-row"></div>
+                <div class="speech-bubble" id="treeSpeech">葉っぱの色は良好。次は水分管理をお願いします。</div>
+                <div class="tree-big">
+                  <div class="trunk"></div><div class="branch b1"></div><div class="branch b2"></div><div class="branch b3"></div>
+                  <div class="leaf l1"></div><div class="leaf l2"></div><div class="leaf l3"></div><div class="leaf l4"></div><div class="leaf l5"></div>
+                  <div class="fruit f1"></div><div class="fruit f2"></div><div class="fruit f3"></div><div class="fruit f4"></div><div class="fruit f5"></div><div class="fruit f6"></div><div class="fruit f7"></div>
+                  <div class="kaki-face"><div class="eye left"></div><div class="eye right"></div><div class="mouth"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="card">
+              <div class="card-head"><h2>樹のプロフィール</h2></div>
+              <div class="card-body">
+                <div class="status-list">
+                  <div class="status"><strong>品種</strong><span>会津身不知柿</span></div>
+                  <div class="status"><strong>樹齢</strong><span>8年</span></div>
+                  <div class="status"><strong>区画</strong><span>北園 A-07</span></div>
+                  <div class="status"><strong>共同管理者</strong><span>4人</span></div>
+                  <div class="status"><strong>次の推奨作業</strong><span>水やり・葉の確認</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head"><h2>センサー値</h2><button class="btn btn-light" id="refreshSensor">更新</button></div>
+              <div class="card-body">
+                <div class="grid two">
+                  <div class="metric"><label>土壌湿度</label><strong id="treeMoisture">40%</strong></div>
+                  <div class="metric"><label>日照</label><strong id="treeSun">76%</strong></div>
+                  <div class="metric"><label>風速</label><strong id="treeWind">2.4m/s</strong></div>
+                  <div class="metric"><label>病害リスク</label><strong id="treeRisk">低</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="watering">
+        <div class="watering-hero">
+          <div class="card">
+            <div class="card-head">
+              <h2>遠隔水やり操作</h2>
+              <span class="badge" id="waterStatus">待機中</span>
+            </div>
+            <div class="card-body">
+              <div class="water-control">
+                <button class="water-button" id="waterBtn">水やり<br>開始</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="card">
+              <div class="card-head"><h2>水やり状態</h2></div>
+              <div class="card-body">
+                <div class="status-list">
+                  <div class="status"><strong>現在の土壌湿度</strong><span id="waterMoisture">40%</span></div>
+                  <div class="status"><strong>前回水やり</strong><span id="lastWatered">昨日 08:20</span></div>
+                  <div class="status"><strong>推奨量</strong><span>8〜12L</span></div>
+                  <div class="status"><strong>天気メモ</strong><span>明日午後に乾燥傾向</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-head"><h2>自動水やり予約</h2></div>
+              <div class="card-body">
+                <form class="form-grid" id="waterScheduleForm">
+                  <label>日時<input type="datetime-local" name="date" required></label>
+                  <label>水量
+                    <select name="amount">
+                      <option>5L</option>
+                      <option selected>10L</option>
+                      <option>15L</option>
+                    </select>
+                  </label>
+                  <button class="btn btn-primary" type="submit">予約を追加</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:18px;">
+          <div class="card-head"><h2>水やり予約一覧</h2></div>
+          <div class="card-body">
+            <div class="schedule-list" id="waterScheduleList">
+              <div class="schedule"><time>明日 07:30</time><div><strong>自動水やり</strong><span>10L / 湿度35%未満なら実行</span></div><button class="btn btn-light">編集</button></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="camera">
+        <div class="card">
+          <div class="card-head">
+            <h2>ライブカメラ</h2>
+            <div class="top-actions">
+              <button class="btn btn-light" id="snapshotBtn">スナップショット保存</button>
+              <button class="btn btn-info" id="zoomBtn">ズーム</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="live-video youtube-demo">
+              <iframe
+                class="youtube-frame"
+                src="https://www.youtube.com/embed/8pNbLKewkBE?rel=0&modestbranding=1"
+                title="KAKI LINK ライブカメラ映像デモ"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+              </iframe>
+              <div class="camera-ui">
+                <div class="rec"><i></i> DEMO LIVE 北園 A-07</div>
+                <div class="camera-stats">
+                  <div class="camera-stat">映像: YouTubeデモ</div>
+                  <div class="camera-stat">葉色判定: 良好</div>
+                  <div class="camera-stat">実の認識: 32個</div>
+                  <div class="camera-stat">最終更新: <span id="liveTime">09:41:12</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="kakiChat">
+        <div class="chat-layout">
+          <div class="chat-window">
+            <div class="chat-head">
+              <div class="avatar">柿</div>
+              <div><strong>AI柿ちゃん</strong><span>樹の状態をもとに返答するデモ</span></div>
+            </div>
+            <div class="messages" id="kakiMessages">
+              <div class="msg bot">こんにちは。今日は少し土が乾いているよ。水やりしてくれるとうれしいな。</div>
+              <div class="msg me">今日の調子はどう？</div>
+              <div class="msg bot">健康スコアは88で良好です。実は32個、葉の色もきれいです。</div>
+            </div>
+            <form class="chat-form" id="kakiChatForm">
+              <input name="message" placeholder="柿に質問する。例：水やり必要？" autocomplete="off" required>
+              <button type="submit">送信</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h2>柿ちゃんに聞けること</h2></div>
+            <div class="card-body">
+              <div class="status-list">
+                <button class="status quickAsk" data-text="水やりは必要？"><strong>水やりは必要？</strong><span>湿度から判断</span></button>
+                <button class="status quickAsk" data-text="収穫はいつ頃？"><strong>収穫はいつ頃？</strong><span>実の状態から回答</span></button>
+                <button class="status quickAsk" data-text="今日やるべき作業は？"><strong>今日やるべき作業は？</strong><span>おすすめ作業</span></button>
+                <button class="status quickAsk" data-text="病気のリスクはある？"><strong>病気のリスクはある？</strong><span>葉色・湿度から推定</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="teamChat">
+        <div class="chat-layout">
+          <div class="chat-window">
+            <div class="chat-head">
+              <div class="avatar">共</div>
+              <div><strong>A-07 共同管理チャット</strong><span>佐藤さん、田中さん、山本さん、Ryoさん</span></div>
+            </div>
+            <div class="messages" id="teamMessages">
+              <div class="msg other"><small>佐藤さん</small>週末の草刈り、参加できる方いますか？</div>
+              <div class="msg other"><small>田中さん</small>日曜の午前なら行けます。水やりも確認します。</div>
+              <div class="msg me"><small>Ryoさん</small>自分はライブカメラで葉の状態を確認しておきます。</div>
+              <div class="msg other"><small>山本さん</small>ありがとうございます。作業後に成長記録も残しましょう。</div>
+            </div>
+            <form class="chat-form" id="teamChatForm">
+              <input name="message" placeholder="共同管理者にメッセージ" autocomplete="off" required>
+              <button type="submit">送信</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h2>共同管理タスク</h2></div>
+            <div class="card-body">
+              <div class="status-list" id="teamTaskList">
+                <div class="status"><div><strong>草刈り</strong><span>担当未定 / 日曜午前</span></div><button class="btn btn-light assignBtn">担当する</button></div>
+                <div class="status"><div><strong>葉の写真撮影</strong><span>担当：山本さん</span></div><button class="btn btn-light">詳細</button></div>
+                <div class="status"><div><strong>水やり確認</strong><span>担当：田中さん</span></div><button class="btn btn-light">詳細</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="tasks">
+        <div class="grid two">
+          <div class="card">
+            <div class="card-head"><h2>作業予約フォーム</h2></div>
+            <div class="card-body">
+              <form class="form-grid" id="taskForm">
+                <label>作業内容
+                  <select name="work">
+                    <option>水やり</option>
+                    <option>草刈り</option>
+                    <option>葉の状態確認</option>
+                    <option>収穫補助</option>
+                    <option>写真撮影</option>
+                  </select>
+                </label>
+                <label>日時<input type="datetime-local" name="date" required></label>
+                <label>参加人数<input type="number" name="people" min="1" max="8" value="1"></label>
+                <label>メモ<textarea name="memo" placeholder="持ち物や連絡事項"></textarea></label>
+                <button class="btn btn-primary" type="submit">予約する</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h2>予約済み作業</h2></div>
+            <div class="card-body">
+              <div class="schedule-list" id="taskList">
+                <div class="schedule"><time>土 09:00</time><div><strong>水やり</strong><span>担当：佐藤さん / 80pt</span></div><button class="btn btn-light">詳細</button></div>
+                <div class="schedule"><time>日 10:30</time><div><strong>草刈り</strong><span>担当：田中さん / 120pt</span></div><button class="btn btn-light">詳細</button></div>
+                <div class="schedule"><time>水 15:00</time><div><strong>成長記録撮影</strong><span>担当：事務局 / 50pt</span></div><button class="btn btn-light">詳細</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="records">
+        <div class="card">
+          <div class="card-head">
+            <h2>成長記録タイムライン</h2>
+            <button class="btn btn-orange" id="addRecordBtn">今日の記録を追加</button>
+          </div>
+          <div class="card-body">
+            <div class="schedule-list" id="recordList">
+              <div class="schedule"><time>今日</time><div><strong>土壌湿度が低下</strong><span>AIが水やりを推奨。葉色は良好。</span></div><button class="btn btn-light">見る</button></div>
+              <div class="schedule"><time>3日前</time><div><strong>実の数が32個に増加</strong><span>前回確認から3個増えました。</span></div><button class="btn btn-light">見る</button></div>
+              <div class="schedule"><time>1週間前</time><div><strong>草刈り完了</strong><span>共同管理者2名が参加。120pt付与。</span></div><button class="btn btn-light">見る</button></div>
+              <div class="schedule"><time>2週間前</time><div><strong>葉の写真を保存</strong><span>病害リスクは低い判定。</span></div><button class="btn btn-light">見る</button></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="rewards">
+        <div class="card">
+          <div class="card-head">
+            <h2>特典交換</h2>
+            <strong id="rewardPoints">1,240 pt</strong>
+          </div>
+          <div class="card-body">
+            <div class="market-grid">
+              <article class="reward">
+                <div class="reward-img">柿</div>
+                <div class="reward-body">
+                  <h3>収穫柿 1kg</h3>
+                  <p>自分たちで育てた柿を受け取れます。</p>
+                  <div class="price"><b>500 pt</b><button class="btn btn-orange exchangeBtn" data-cost="500">交換</button></div>
+                </div>
+              </article>
+              <article class="reward">
+                <div class="reward-img">菓</div>
+                <div class="reward-body">
+                  <h3>柿スイーツセット</h3>
+                  <p>地域の加工品と連携した限定特典です。</p>
+                  <div class="price"><b>800 pt</b><button class="btn btn-orange exchangeBtn" data-cost="800">交換</button></div>
+                </div>
+              </article>
+              <article class="reward">
+                <div class="reward-img">体</div>
+                <div class="reward-body">
+                  <h3>収穫体験チケット</h3>
+                  <p>家族や友人と参加できる体験チケットです。</p>
+                  <div class="price"><b>1,200 pt</b><button class="btn btn-orange exchangeBtn" data-cost="1200">交換</button></div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 id="modalTitle">通知</h3>
+        <button id="modalClose">×</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">完了しました</div>
+
+  <script>
+    const pageMeta = {
+      home: ["ホーム", "今日の柿園の状態と、やるべき作業を確認できます。"],
+      tree: ["マイ柿の樹", "樹のプロフィール、センサー状態、収穫チェックを確認できます。"],
+      watering: ["水やり操作", "遠隔水やりボタンと自動水やり予約のデモです。"],
+      camera: ["ライブカメラ", "畑のライブ映像風画面で樹の状態を確認できます。"],
+      kakiChat: ["柿とチャット", "AI柿ちゃんに状態や作業内容を質問できます。"],
+      teamChat: ["共同管理チャット", "同じ樹を育てる仲間と作業相談ができます。"],
+      tasks: ["作業予約", "水やり、草刈り、撮影、収穫補助などの作業予約を追加できます。"],
+      records: ["成長記録", "樹の成長、作業履歴、写真記録を時系列で確認できます。"],
+      rewards: ["特典交換", "作業で獲得したポイントを柿や体験特典に交換できます。"]
+    };
+
+    const state = {
+      points: 1240,
+      moisture: 40,
+      watering: false
+    };
+
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+
+    function openPage(id) {
+      $$(".page").forEach(page => page.classList.toggle("active", page.id === id));
+      $$(".nav button").forEach(btn => btn.classList.toggle("active", btn.dataset.page === id));
+      $("#pageTitle").textContent = pageMeta[id][0];
+      $("#pageDesc").textContent = pageMeta[id][1];
+      $("#sidebar").classList.remove("open");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    $$(".nav button").forEach(btn => btn.addEventListener("click", () => openPage(btn.dataset.page)));
+    $$("[data-open-page]").forEach(btn => btn.addEventListener("click", () => openPage(btn.dataset.openPage)));
+
+    $("#menuBtn").addEventListener("click", () => $("#sidebar").classList.toggle("open"));
+
+    function toast(text) {
+      const t = $("#toast");
+      t.textContent = text;
+      t.classList.add("show");
+      clearTimeout(toast.timer);
+      toast.timer = setTimeout(() => t.classList.remove("show"), 2200);
+    }
+
+    function modal(title, body) {
+      $("#modalTitle").textContent = title;
+      $("#modalBody").innerHTML = body;
+      $("#modalBackdrop").classList.add("show");
+    }
+
+    $("#modalClose").addEventListener("click", () => $("#modalBackdrop").classList.remove("show"));
+    $("#modalBackdrop").addEventListener("click", e => {
+      if (e.target.id === "modalBackdrop") $("#modalBackdrop").classList.remove("show");
+    });
+
+    $("#notifyBtn").addEventListener("click", () => {
+      modal("通知一覧", `
+        <div class="status-list">
+          <div class="status"><div><strong>水やり推奨</strong><span>土壌湿度が40%まで低下しています。</span></div></div>
+          <div class="status"><div><strong>共同管理者から返信</strong><span>田中さんが日曜午前の草刈りに参加可能です。</span></div></div>
+          <div class="status"><div><strong>ポイント付与</strong><span>前回作業で80pt獲得しました。</span></div></div>
+        </div>
+      `);
+    });
+
+    function updatePoints() {
+      const text = state.points.toLocaleString() + " pt";
+      $("#pointDisplay").textContent = text;
+      $("#rewardPoints").textContent = text;
+    }
+
+    function updateMoisture(value) {
+      state.moisture = value;
+      ["#mMoisture", "#treeMoisture", "#waterMoisture"].forEach(sel => $(sel).textContent = value + "%");
+      $("#barMoisture").style.width = value + "%";
+      if (value >= 55) {
+        $("#mainSpeech").textContent = "水やりありがとう。土がしっとりして元気が出てきたよ。";
+        $("#treeSpeech").textContent = "水分状態は良好です。次は葉の状態を確認しましょう。";
+      }
+    }
+
+    function waterAction() {
+      if (state.watering) return;
+      state.watering = true;
+      $("#waterStatus").textContent = "水やり中";
+      $("#waterBtn").innerHTML = "水やり中<br>...";
+      $("#waterBtn").disabled = true;
+      toast("遠隔水やりを開始しました");
+
+      let current = state.moisture;
+      const timer = setInterval(() => {
+        current += 3;
+        updateMoisture(Math.min(current, 62));
+        if (current >= 62) {
+          clearInterval(timer);
+          state.watering = false;
+          $("#waterStatus").textContent = "完了";
+          $("#waterBtn").innerHTML = "水やり<br>開始";
+          $("#waterBtn").disabled = false;
+          $("#lastWatered").textContent = "たった今";
+          state.points += 80;
+          updatePoints();
+          toast("水やり完了。80pt獲得しました");
+        }
+      }, 450);
+    }
+
+    $("#waterBtn").addEventListener("click", waterAction);
+    $("#quickWater").addEventListener("click", () => {
+      openPage("watering");
+      setTimeout(waterAction, 350);
+    });
+
+    $("#waterScheduleForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const fd = new FormData(e.currentTarget);
+      const date = formatDate(new Date(fd.get("date")));
+      const amount = fd.get("amount");
+      $("#waterScheduleList").insertAdjacentHTML("afterbegin",
+        `<div class="schedule"><time>${date}</time><div><strong>自動水やり</strong><span>${amount} / 予約済み</span></div><button class="btn btn-light">編集</button></div>`
+      );
+      e.currentTarget.reset();
+      toast("自動水やり予約を追加しました");
+    });
+
+    $("#refreshSensor").addEventListener("click", () => {
+      const moisture = Math.floor(35 + Math.random() * 30);
+      const sun = Math.floor(62 + Math.random() * 30);
+      const wind = (1.2 + Math.random() * 3).toFixed(1);
+      updateMoisture(moisture);
+      $("#treeSun").textContent = sun + "%";
+      $("#treeWind").textContent = wind + "m/s";
+      $("#treeRisk").textContent = moisture > 58 ? "中" : "低";
+      $("#mTemp").textContent = (22 + Math.random() * 6).toFixed(1) + "℃";
+      $("#mHealth").textContent = Math.floor(82 + Math.random() * 15);
+      toast("センサーデータを更新しました");
+    });
+
+    $("#harvestBtn").addEventListener("click", () => {
+      modal("収穫チェック", `
+        <p style="line-height:1.8;font-weight:700;margin-top:0;">AI画像判定では、実の色づきはまだ途中です。収穫推奨は約2〜3週間後の想定です。</p>
+        <div class="status-list">
+          <div class="status"><strong>色づき</strong><span>62%</span></div>
+          <div class="status"><strong>実の数</strong><span>32個</span></div>
+          <div class="status"><strong>推奨アクション</strong><span>水分管理とライブカメラ確認</span></div>
+        </div>
+      `);
+    });
+
+    function appendMessage(container, text, cls, name = "") {
+      const div = document.createElement("div");
+      div.className = "msg " + cls;
+      div.innerHTML = (name ? `<small>${escapeHtml(name)}</small>` : "") + escapeHtml(text);
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function kakiReply(text) {
+      const lower = text.toLowerCase();
+      if (text.includes("水") || lower.includes("water")) return state.moisture < 50 ? "今は水やりした方がよさそう。土壌湿度が" + state.moisture + "%まで下がっています。" : "水やりありがとう。今は土がしっとりしているので、少し様子見で大丈夫です。";
+      if (text.includes("収穫")) return "収穫はもう少し先です。色づきは進んでいますが、2〜3週間後が目安です。";
+      if (text.includes("作業") || text.includes("今日")) return "今日のおすすめは、ライブカメラ確認、水やり、葉の写真記録です。";
+      if (text.includes("病気") || text.includes("リスク")) return "現時点の病害リスクは低めです。ただし湿度が高い日が続く場合は葉の裏を確認してください。";
+      return "状態を確認しました。健康スコアは良好です。気になることがあれば、水やり・収穫・作業・病気について聞いてください。";
+    }
+
+    $("#kakiChatForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const input = e.currentTarget.message;
+      const text = input.value.trim();
+      if (!text) return;
+      appendMessage($("#kakiMessages"), text, "me");
+      input.value = "";
+      setTimeout(() => appendMessage($("#kakiMessages"), kakiReply(text), "bot"), 450);
+    });
+
+    $$(".quickAsk").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const text = btn.dataset.text;
+        appendMessage($("#kakiMessages"), text, "me");
+        setTimeout(() => appendMessage($("#kakiMessages"), kakiReply(text), "bot"), 450);
+      });
+    });
+
+    $("#teamChatForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const text = e.currentTarget.message.value.trim();
+      if (!text) return;
+      appendMessage($("#teamMessages"), text, "me", "Ryoさん");
+      e.currentTarget.message.value = "";
+      setTimeout(() => appendMessage($("#teamMessages"), "了解です。作業予定に反映しておきます。", "other", "佐藤さん"), 700);
+    });
+
+    $$(".assignBtn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        btn.closest(".status").querySelector("span").textContent = "担当：Ryoさん / 日曜午前";
+        btn.textContent = "担当中";
+        toast("共同管理タスクを担当しました");
+      });
+    });
+
+    $("#taskForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const fd = new FormData(e.currentTarget);
+      const work = fd.get("work");
+      const date = formatDate(new Date(fd.get("date")));
+      const people = fd.get("people");
+      $("#taskList").insertAdjacentHTML("afterbegin",
+        `<div class="schedule"><time>${date}</time><div><strong>${escapeHtml(work)}</strong><span>担当：Ryoさん / ${people}名 / 予約済み</span></div><button class="btn btn-light">詳細</button></div>`
+      );
+      e.currentTarget.reset();
+      toast("作業予約を追加しました");
+    });
+
+    $("#addRecordBtn").addEventListener("click", () => {
+      $("#recordList").insertAdjacentHTML("afterbegin",
+        `<div class="schedule"><time>たった今</time><div><strong>ライブカメラ確認を記録</strong><span>葉色良好。実の状態も安定。</span></div><button class="btn btn-light">見る</button></div>`
+      );
+      state.points += 50;
+      updatePoints();
+      toast("成長記録を追加し、50pt獲得しました");
+    });
+
+    $$(".exchangeBtn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const cost = Number(btn.dataset.cost);
+        if (state.points < cost) {
+          toast("ポイントが不足しています");
+          return;
+        }
+        state.points -= cost;
+        updatePoints();
+        toast("特典を交換しました");
+      });
+    });
+
+    $("#snapshotBtn").addEventListener("click", () => {
+      $("#recordList").insertAdjacentHTML("afterbegin",
+        `<div class="schedule"><time>たった今</time><div><strong>ライブカメラのスナップショット</strong><span>北園 A-07 の画像記録を保存しました。</span></div><button class="btn btn-light">見る</button></div>`
+      );
+      toast("スナップショットを成長記録に保存しました");
+    });
+
+    let zoomed = false;
+    $("#zoomBtn").addEventListener("click", () => {
+      zoomed = !zoomed;
+      const frame = $(".youtube-frame");
+      if (frame) {
+        frame.style.transform = zoomed ? "scale(1.08)" : "scale(1)";
+        frame.style.transition = "transform .2s ease";
+      }
+      toast(zoomed ? "映像を少し拡大しました" : "拡大を解除しました");
+    });
+
+    setInterval(() => {
+      const d = new Date();
+      $("#liveTime").textContent = d.toLocaleTimeString("ja-JP");
+    }, 1000);
+
+    function formatDate(date) {
+      if (isNaN(date)) return "未設定";
+      const w = ["日","月","火","水","木","金","土"][date.getDay()];
+      return `${w} ${String(date.getHours()).padStart(2,"0")}:${String(date.getMinutes()).padStart(2,"0")}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+  </script>
+</body>
+</html>
