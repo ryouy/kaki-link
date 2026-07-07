@@ -1268,6 +1268,358 @@
       background: linear-gradient(135deg, #16a34a, #15803d);
     }
 
+
+    /* Mobile usability improvements */
+    .sidebar-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 39;
+      display: none;
+      background: rgba(15, 23, 42, .42);
+      backdrop-filter: blur(4px);
+    }
+
+    .sidebar-backdrop.show {
+      display: block;
+    }
+
+    .mobile-bottom-nav {
+      display: none;
+    }
+
+    .mobile-close {
+      display: none;
+    }
+
+    @media (max-width: 1080px) {
+      .app {
+        display: block;
+      }
+
+      .main {
+        padding-bottom: 104px;
+      }
+
+      .sidebar {
+        width: min(86vw, 320px);
+        border-radius: 0 28px 28px 0;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .mobile-close {
+        display: grid;
+        place-items: center;
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        width: 38px;
+        height: 38px;
+        border: 0;
+        border-radius: 14px;
+        background: rgba(15, 23, 42, .06);
+        color: #0f172a;
+        font-size: 22px;
+        font-weight: 900;
+      }
+
+      .topbar {
+        position: static;
+        margin-bottom: 14px;
+      }
+
+      .top-actions {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .top-actions .btn {
+        min-height: 44px;
+      }
+
+      .mobile-bottom-nav {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        z-index: 35;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 6px;
+        padding: 8px;
+        border: 1px solid rgba(15,23,42,.10);
+        border-radius: 24px;
+        background: rgba(255,255,255,.86);
+        backdrop-filter: blur(22px);
+        box-shadow: 0 18px 48px rgba(15,23,42,.18);
+      }
+
+      .mobile-bottom-nav button {
+        min-width: 0;
+        min-height: 56px;
+        display: grid;
+        place-items: center;
+        gap: 3px;
+        border: 0;
+        border-radius: 18px;
+        background: transparent;
+        color: #64748b;
+        font-size: 10px;
+        font-weight: 900;
+      }
+
+      .mobile-bottom-nav button.active {
+        color: #16a34a;
+        background: rgba(34,197,94,.10);
+      }
+
+      .mobile-bottom-nav svg {
+        width: 22px;
+        height: 22px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        background:
+          radial-gradient(circle at 12% 4%, rgba(34,197,94,.12), transparent 28%),
+          radial-gradient(circle at 92% 2%, rgba(249,115,22,.12), transparent 28%),
+          linear-gradient(180deg, #f8fafc 0%, #f4fbf3 100%);
+      }
+
+      .main {
+        padding: 12px 12px 104px;
+      }
+
+      .topbar {
+        border-radius: 22px;
+        padding: 12px;
+        gap: 10px;
+      }
+
+      .topbar h1 {
+        font-size: 22px;
+      }
+
+      .topbar p {
+        font-size: 12px;
+        line-height: 1.55;
+      }
+
+      .top-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .top-actions .btn:first-child {
+        grid-column: 1 / -1;
+      }
+
+      .btn {
+        width: 100%;
+        min-height: 44px;
+        padding: 10px 12px;
+        border-radius: 14px;
+        font-size: 13px;
+      }
+
+      .mobile-nav-toggle {
+        width: 100%;
+        min-height: 44px;
+      }
+
+      .card {
+        border-radius: 22px;
+      }
+
+      .card-head {
+        padding: 14px 15px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .card-head h2,
+      .card-head h3 {
+        font-size: 17px;
+      }
+
+      .card-body {
+        padding: 14px;
+      }
+
+      .metric {
+        min-height: auto;
+        padding: 14px;
+        border-radius: 20px;
+      }
+
+      .metric strong {
+        font-size: 28px;
+      }
+
+      .orchard-stage {
+        min-height: 520px;
+        border-radius: 22px;
+      }
+
+      .speech-bubble {
+        left: 12px;
+        right: 12px;
+        top: 12px;
+        max-width: none;
+        padding: 12px 14px;
+        border-radius: 18px;
+        font-size: 13px;
+      }
+
+      .quick-actions {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        gap: 8px;
+      }
+
+      .action-card {
+        min-height: 78px;
+        border-radius: 18px;
+        font-size: 12px;
+      }
+
+      .action-card span {
+        width: 38px;
+        height: 38px;
+        border-radius: 15px;
+      }
+
+      .tree-big {
+        top: 150px;
+        transform: translateX(-50%) scale(.82);
+      }
+
+      .live-video,
+      .youtube-demo {
+        min-height: 320px;
+        border-radius: 22px;
+      }
+
+      .camera-ui {
+        inset: 10px;
+      }
+
+      .camera-stats {
+        display: none;
+      }
+
+      .rec {
+        padding: 7px 10px;
+        font-size: 11px;
+      }
+
+      .chat-layout {
+        gap: 12px;
+      }
+
+      .chat-layout .chat-window {
+        height: min(72vh, 560px);
+        border-radius: 22px;
+      }
+
+      .chat-form {
+        grid-template-columns: 1fr;
+      }
+
+      .chat-form input {
+        border-radius: 16px;
+      }
+
+      .chat-form button {
+        min-height: 44px;
+      }
+
+      .watering-hero {
+        gap: 12px;
+      }
+
+      .water-control {
+        min-height: 300px;
+        border-radius: 22px;
+      }
+
+      .water-button {
+        width: 168px;
+        height: 168px;
+        font-size: 20px;
+      }
+
+      .status {
+        align-items: flex-start;
+        flex-direction: column;
+        border-radius: 16px;
+      }
+
+      .status .btn {
+        width: 100%;
+      }
+
+      .schedule {
+        border-radius: 16px;
+      }
+
+      .form-grid input,
+      .form-grid select,
+      .form-grid textarea {
+        min-height: 44px;
+        border-radius: 13px;
+      }
+
+      .modal {
+        border-radius: 22px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .main {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .top-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .top-actions .btn:first-child {
+        grid-column: auto;
+      }
+
+      .mobile-bottom-nav {
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+        border-radius: 22px;
+      }
+
+      .mobile-bottom-nav button {
+        min-height: 52px;
+        font-size: 9px;
+      }
+
+      .mobile-bottom-nav svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .tree-big {
+        transform: translateX(-50%) scale(.74);
+      }
+
+      .orchard-stage {
+        min-height: 500px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1288,6 +1640,7 @@
   </svg>
   <div class="app">
     <aside class="sidebar" id="sidebar">
+      <button class="mobile-close" id="sidebarClose" aria-label="メニューを閉じる">×</button>
       <div class="brand">
         <div class="brand-mark" aria-label="KAKI LINK">
           <svg viewBox="0 0 48 48" aria-hidden="true">
@@ -1736,6 +2089,17 @@
     </main>
   </div>
 
+
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <nav class="mobile-bottom-nav" aria-label="スマホ用メニュー">
+    <button class="active" data-page="home"><svg><use href="#i-home"></use></svg><span>ホーム</span></button>
+    <button data-page="watering"><svg><use href="#i-droplet"></use></svg><span>水やり</span></button>
+    <button data-page="camera"><svg><use href="#i-camera"></use></svg><span>カメラ</span></button>
+    <button data-page="kakiChat"><svg><use href="#i-chat"></use></svg><span>柿チャット</span></button>
+    <button data-page="teamChat"><svg><use href="#i-users"></use></svg><span>共同管理</span></button>
+  </nav>
+
   <div class="modal-backdrop" id="modalBackdrop">
     <div class="modal">
       <div class="modal-head">
@@ -1770,19 +2134,35 @@
     const $ = (selector) => document.querySelector(selector);
     const $$ = (selector) => Array.from(document.querySelectorAll(selector));
 
+    function closeSidebar() {
+      $("#sidebar").classList.remove("open");
+      $("#sidebarBackdrop").classList.remove("show");
+      document.body.style.overflow = "";
+    }
+
+    function openSidebar() {
+      $("#sidebar").classList.add("open");
+      $("#sidebarBackdrop").classList.add("show");
+      document.body.style.overflow = "hidden";
+    }
+
     function openPage(id) {
       $$(".page").forEach(page => page.classList.toggle("active", page.id === id));
       $$(".nav button").forEach(btn => btn.classList.toggle("active", btn.dataset.page === id));
+      $$(".mobile-bottom-nav button").forEach(btn => btn.classList.toggle("active", btn.dataset.page === id));
       $("#pageTitle").textContent = pageMeta[id][0];
       $("#pageDesc").textContent = pageMeta[id][1];
-      $("#sidebar").classList.remove("open");
+      closeSidebar();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     $$(".nav button").forEach(btn => btn.addEventListener("click", () => openPage(btn.dataset.page)));
+    $$(".mobile-bottom-nav button").forEach(btn => btn.addEventListener("click", () => openPage(btn.dataset.page)));
     $$("[data-open-page]").forEach(btn => btn.addEventListener("click", () => openPage(btn.dataset.openPage)));
 
-    $("#menuBtn").addEventListener("click", () => $("#sidebar").classList.toggle("open"));
+    $("#menuBtn").addEventListener("click", openSidebar);
+    $("#sidebarClose").addEventListener("click", closeSidebar);
+    $("#sidebarBackdrop").addEventListener("click", closeSidebar);
 
     function toast(text) {
       const t = $("#toast");
