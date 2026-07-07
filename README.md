@@ -1,8 +1,9 @@
 # KAKI LINK
 
 KAKI LINK は、IoT・AI・コミュニティ機能を使って、柿の樹を複数人で見守り・育てることを想定したスマート柿園Webアプリのデモです。
+[デモアプリ](https://ryouy.github.io/kaki-link/)
 
-## [企画書](https://docs.google.com/document/d/10D8Qo2LepE-rljoa-gQeZ6fdqvN2UnLrI5z-N2ffLec/edit?usp=sharing)
+[企画書](https://docs.google.com/document/d/10D8Qo2LepE-rljoa-gQeZ6fdqvN2UnLrI5z-N2ffLec/edit?usp=sharing)
 
 ## 主な機能
 
